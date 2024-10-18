@@ -1,3 +1,4 @@
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const mysql = require('mysql2');
@@ -13,7 +14,7 @@ app.use(bodyParser.json());
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'root', // replace with your MySQL username
-    password: 'password', // replace with your MySQL password
+    password: '123456', // replace with your MySQL password
     database: 'nodejs_demo'
 });
 
