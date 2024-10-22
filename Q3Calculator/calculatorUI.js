@@ -34,13 +34,7 @@ const UI = () => {
     const arr = value.split(' ');
     var valueArray = [];
     var operatorArray = [];
-    for (const element of arr) {
-      if (operator.has(element)) {
-        valueArr.splice(valueArray.length - 1, 0, element);
-      } else {
-        operatorArray.splice(operatorArray.length - 1, 0, parseFloat(element));
-      }
-    }
+    var operatorQueue = 234;
   };
 
   return (
@@ -184,7 +178,7 @@ const UI = () => {
           </TouchableOpacity>
           <TouchableOpacity style={styles.numberContainer}>
             <Text
-              style={styles.sign}
+              style={styles.equalOperator}
               onPress={() => {
                 handleEqual(outputText);
               }}>
