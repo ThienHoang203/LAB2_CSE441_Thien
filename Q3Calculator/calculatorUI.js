@@ -7,194 +7,83 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import BtnNumber from './btnNumber';
 import styles from './style';
+import BtnOperator from './btnOperator';
+import BtnClear from './BtnClear';
+import BtnEqual from './btnEqual';
 
 const UI = () => {
-  const operatorSet = new Set(['÷', '-', '+', 'x']);
-
-  const [outputText, setOutputText] = useState('0');
+  const [outPutText, setOutputText] = useState('0');
   const [operator, setOperator] = useState('');
-  const [firstValue, setFirstValue] = useState(0);
+  const [firstValue, setFirstValue] = useState(0.0);
 
-  const handleInputText = value => {
-    if (outputText === '0') {
+  const handleOnPressNumber = value => {
+    if (outPutText === '0' || outPutText === 'Invalid Input') {
       setOutputText(value);
-    } else if (!operatorSet.has(value)) {
-      setOutputText(outputText + value);
     } else {
-      setOutputText(outputText + ' ' + value + ' ');
+      setOutputText(outPutText + value);
     }
   };
 
-  const handleDeleteButton = () => {
+  const handleOnPressOperator = value => {
+    setOperator(value);
+    setFirstValue(parseFloat(outPutText));
     setOutputText('0');
   };
 
-  const handleEqual = value => {
-    const arr = value.split(' ');
-    var valueArray = [];
-    var operatorArray = [];
-    var operatorQueue = 234;
+  const handleClearBtn = () => {
+    setFirstValue(0.0);
+    setOperator('');
+    setOutputText('0');
+  };
+
+  const handleEqualOperator = () => {
+    switch (operator) {
+      case '÷':
+        const secondValue = parseFloat(outPutText);
+        if (secondValue === 0) {
+          setOutputText('Invalid Input');
+        } else setOutputText(String(firstValue / secondValue));
+        break;
+      case 'x':
+        setOutputText(String(firstValue * secondValue));
+        break;
+      case '+':
+        setOutputText(String(firstValue + secondValue));
+        break;
+      case '-':
+        setOutputText(String(firstValue - secondValue));
+        break;
+      default:
+        setOutputText('Invalid Input');
+        break;
+    }
   };
 
   return (
     <View style={styles.container}>
-      <View id="outputText">
-        <Text>{outputText}</Text>
+      <View style={styles.view1}>
+        <Text style={styles.outputText}>{outPutText}</Text>
       </View>
-      <View id="keyboard">
-        <View id="row1" style={styles.row}>
-          <TouchableOpacity style={styles.numberContainer}>
-            <Text
-              style={styles.number}
-              onPress={() => {
-                handleInputText('7');
-              }}>
-              7
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.numberContainer}>
-            <Text
-              style={styles.number}
-              onPress={() => {
-                handleInputText('8');
-              }}>
-              8
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.numberContainer}>
-            <Text
-              style={styles.number}
-              onPress={() => {
-                handleInputText('9');
-              }}>
-              9
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.numberContainer}>
-            <Text
-              style={styles.sign}
-              onPress={() => {
-                handleInputText('÷');
-              }}>
-              ÷
-            </Text>
-          </TouchableOpacity>
+      <View style={styles.view2}>
+        <View style={styles.row}>
+          <BtnNumber value={'7'} onPress={() => handleOnPressNumber('7')} />
+          <BtnNumber value={'8'} onPress={() => handleOnPressNumber('8')} />
+          <BtnNumber value={'9'} onPress={() => handleOnPressNumber('9')} />
+          <BtnOperator value={'÷'} onPress={() => handleOnPressOperator('÷')} />
         </View>
-        <View id="row2" style={styles.row}>
-          <TouchableOpacity style={styles.numberContainer}>
-            <Text
-              style={styles.number}
-              onPress={() => {
-                handleInputText('4');
-              }}>
-              4
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.numberContainer}>
-            <Text
-              style={styles.number}
-              onPress={() => {
-                handleInputText('5');
-              }}>
-              5
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.numberContainer}>
-            <Text
-              style={styles.number}
-              onPress={() => {
-                handleInputText('6');
-              }}>
-              6
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.numberContainer}>
-            <Text
-              style={styles.sign}
-              onPress={() => {
-                handleInputText('x');
-              }}>
-              x
-            </Text>
-          </TouchableOpacity>
+        <View style={styles.row}>
+          <BtnNumber value={'4'} onPress={() => handleOnPressNumber('4')} />
+          <BtnNumber value={'5'} onPress={() => handleOnPressNumber('5')} />
+          <BtnNumber value={'6'} onPress={() => handleOnPressNumber('6')} />
+          <BtnOperator value={'x'} onPress={() => handleOnPressOperator('x')} />
         </View>
-        <View id="row3" style={styles.row}>
-          <TouchableOpacity style={styles.numberContainer}>
-            <Text
-              style={styles.number}
-              onPress={() => {
-                handleInputText('1');
-              }}>
-              1
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.numberContainer}>
-            <Text
-              style={styles.number}
-              onPress={() => {
-                handleInputText('2');
-              }}>
-              2
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.numberContainer}>
-            <Text
-              style={styles.number}
-              onPress={() => {
-                handleInputText('3');
-              }}>
-              3
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.numberContainer}>
-            <Text
-              style={styles.sign}
-              onPress={() => {
-                handleInputText('-');
-              }}>
-              -
-            </Text>
-          </TouchableOpacity>
-        </View>
-        <View id="row4" style={styles.row}>
-          <TouchableOpacity style={styles.numberContainer}>
-            <Text
-              style={styles.number}
-              onPress={() => {
-                handleInputText('0');
-              }}>
-              0
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.numberContainer}>
-            <Text
-              style={styles.number}
-              onPress={() => {
-                handleInputText('+');
-              }}>
-              +
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.numberContainer}>
-            <Text
-              style={styles.equalOperator}
-              onPress={() => {
-                handleEqual(outputText);
-              }}>
-              =
-            </Text>
-          </TouchableOpacity>
-        </View>
-        <View id="row5" style={styles.row}>
-          <TouchableOpacity on>
-            <Text
-              onPress={() => {
-                handleDeleteButton();
-              }}>
-              C
-            </Text>
-          </TouchableOpacity>
+        <View style={styles.row}>
+          <BtnNumber value={'1'} onPress={() => handleOnPressNumber('1')} />
+          <BtnNumber value={'2'} onPress={() => handleOnPressNumber('2')} />
+          <BtnNumber value={'3'} onPress={() => handleOnPressNumber('3')} />
+          <BtnOperator value={'-'} onPress={() => handleOnPressOperator('-')} />
         </View>
       </View>
     </View>
