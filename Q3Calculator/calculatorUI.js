@@ -19,7 +19,11 @@ const UI = () => {
   const [firstValue, setFirstValue] = useState(0.0);
 
   const handleOnPressNumber = value => {
-    if (outPutText === '0' || outPutText === 'Invalid Input') {
+    if (
+      outPutText === '0' ||
+      outPutText === 'Invalid Input' ||
+      outPutText === 'NaN'
+    ) {
       setOutputText(value);
     } else {
       setOutputText(outPutText + value);
@@ -39,15 +43,18 @@ const UI = () => {
   };
 
   const handleEqualOperator = () => {
+    const secondValue = parseFloat(outPutText);
     switch (operator) {
       case '÷':
-        const secondValue = parseFloat(outPutText);
         if (secondValue === 0) {
           setOutputText('Invalid Input');
         } else setOutputText(String(firstValue / secondValue));
         break;
       case 'x':
         setOutputText(String(firstValue * secondValue));
+        console.log('firstValue' + firstValue);
+        console.log('secondValue' + secondValue);
+        console.log('operator' + operator);
         break;
       case '+':
         setOutputText(String(firstValue + secondValue));
@@ -84,6 +91,14 @@ const UI = () => {
           <BtnNumber value={'2'} onPress={() => handleOnPressNumber('2')} />
           <BtnNumber value={'3'} onPress={() => handleOnPressNumber('3')} />
           <BtnOperator value={'-'} onPress={() => handleOnPressOperator('-')} />
+        </View>
+        <View style={styles.row}>
+          <BtnNumber value={'0'} onPress={() => handleOnPressNumber('0')} />
+          <BtnOperator value={'+'} onPress={() => handleOnPressOperator('+')} />
+          <BtnEqual value={'='} onPress={() => handleEqualOperator()} />
+        </View>
+        <View style={styles.row}>
+          <BtnClear value={'C'} onPress={() => handleClearBtn()} />
         </View>
       </View>
     </View>
